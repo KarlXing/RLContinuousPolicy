@@ -16,9 +16,9 @@ def main():
     config = Config()
     config.game = args.game
     config.algo = 'ppo'
-    config.max_steps = int(3e6)
+    config.max_steps = int(2e6)
     config.num_envs = 1
-    config.optimizer = 'Adam'
+    config.optimizer = 'RMSprop'
     config.lr = 0.0003
     config.discount = 0.99
     config.use_gae = True

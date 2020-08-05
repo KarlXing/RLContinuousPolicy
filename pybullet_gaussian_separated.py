@@ -3,7 +3,7 @@ from rlcodebase.env import make_vec_envs
 from rlcodebase.agent import PPOAgent
 from rlcodebase.utils import get_action_dim, init_parser, Config, Logger
 from torch.utils.tensorboard import SummaryWriter
-from model import GaussianUnitStdPolicy
+from model import GaussianSeparatedPolicy
 import pybullet_envs
 from argparse import ArgumentParser
 
@@ -16,9 +16,9 @@ def main():
     config = Config()
     config.game = args.game
     config.algo = 'ppo'
-    config.max_steps = int(3e6)
+    config.max_steps = int(2e6)
     config.num_envs = 1
-    config.optimizer = 'Adam'
+    config.optimizer = 'RMSprop'
     config.lr = 0.0003
     config.discount = 0.99
     config.use_gae = True
@@ -39,7 +39,7 @@ def main():
 
     # prepare env, model and logger
     env = make_vec_envs(config.game, num_envs = config.num_envs, seed = config.seed, num_frame_stack= config.num_frame_stack)
-    model = GaussianUnitStdPolicy(env.observation_space.shape[0], action_dim = get_action_dim(env.action_space)).to(config.device)
+    model = GaussianSeparatedPolicy(env.observation_space.shape[0], action_dim = get_action_dim(env.action_space)).to(config.device)
     logger =  Logger(SummaryWriter(config.save_path), config.num_echo_episodes)
 
     # create agent and run
