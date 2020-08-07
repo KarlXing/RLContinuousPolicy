@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument('--game', default='HalfCheetahBulletEnv-v0')
+parser.add_argument('--seed', default=1, type=int)
 args = parser.parse_args()
 
 def main():
@@ -32,7 +33,7 @@ def main():
     config.ppo_clip_param = 0.2
     config.num_mini_batch = 32
     config.use_gpu = True
-    config.seed = 1
+    config.seed = args.seed
     config.num_frame_stack = 1
     config.after_set()
     print(config)
